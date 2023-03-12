@@ -51,7 +51,21 @@ public static class Queries
         InsertChemistryIntoSubjects
     };
 
+    //Just examples, need updating with real data
+    public static string InsertFactorsIntoTopic = "INSERT INTO Topics(Id, TopicName, SubjectId) VALUES (1, 'Factors', 1)";
+    public static string InsertMultiplesIntoTopic = "INSERT INTO Topics(Id, TopicName, SubjectId) VALUES (2, 'Multiples', 1)";
+    public static string InsertLongDivisionIntoTopic = "INSERT INTO Topics(Id, TopicName, SubjectId) VALUES (3, 'Long Division', 1)";
+
+    //The data required in the topics table
+    public static List<string> InsertIntoTopicsQueries = new List<string>
+    {
+        InsertFactorsIntoTopic,
+        InsertMultiplesIntoTopic,
+        InsertLongDivisionIntoTopic
+    };
+
 
     public static string GetAllSubjects = "SELECT * FROM Subjects";
+    public static string GetAllTopics = "SELECT * FROM Topics WHERE SubjectId = ";
 
 }

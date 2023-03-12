@@ -1087,7 +1087,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd3ca0e54b315144eb11338aac8affd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ButtonPrefab: {fileID: 1849512059648028491, guid: d082b764f154f7a4c8ec32a32fd4b8ff, type: 3}
+  buttonPrefab: {fileID: 1849512059648028491, guid: d082b764f154f7a4c8ec32a32fd4b8ff, type: 3}
   buttonParent: {fileID: 1874754308}
   subjectNameText: {fileID: 631424919}
   backButton: {fileID: 366348624}
