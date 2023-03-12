@@ -33,6 +33,12 @@ public class DatabaseManager : MonoBehaviour
         {
             ExecuteQueryWithNoReturn(query);
         }
+
+        //Inserts data into tables
+        foreach (var query in Queries.InsertIntoTopicsQueries)
+        {
+            ExecuteQueryWithNoReturn(query);
+        }
     }
 
     void Awake()

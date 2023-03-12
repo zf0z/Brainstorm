@@ -8,10 +8,10 @@ using UnityEngine.UI;
 
 public class SubjectManager : MonoBehaviour
 {
-    public Button ButtonPrefab;
-    public Transform buttonParent;
     private DatabaseManager databaseManager;
 
+    public Button buttonPrefab;
+    public Transform buttonParent;
     public Text subjectNameText;
     public Button backButton;
 
@@ -27,10 +27,25 @@ public class SubjectManager : MonoBehaviour
         subjectNameText.text = subject.SubjectName;
 
         backButton.onClick.AddListener(Back);
+
+        var topics = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetAllTopics + id);
+
+        foreach (var topic in topics)
+        {
+            var button = Instantiate(buttonPrefab, buttonParent);
+            button.GetComponentInChildren<Text>().text = topic.TopicName;
+            button.onClick.AddListener(() => LoadTopicPage(topic.Id));
+        }
     }
 
     private void Back()
     {
         SceneManager.LoadScene("Homepage");
+    }
+
+    private void LoadTopicPage(long topicId)
+    {
+        PlayerPrefs.SetInt("TopicId", (int)topicId);
+        SceneManager.LoadScene("Topic");
     }
 }
