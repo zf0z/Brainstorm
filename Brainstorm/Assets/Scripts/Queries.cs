@@ -51,4 +51,7 @@ public static class Queries
         InsertChemistryIntoSubjects
     };
 
+
+    public static string GetAllSubjects = "SELECT * FROM Subjects";
+
 }

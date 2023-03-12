@@ -3,60 +3,75 @@ using System.Data;
 using Mono.Data.Sqlite;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
+using System;
 
 public class DatabaseManager : MonoBehaviour
 {
+    private static DatabaseManager instance;
+
     private string connectionString;
     private IDbConnection dbConnection;
 
-    public bool needsRunning;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-
-        if (!needsRunning) return;
-
-        connectionString = "URI=file:" + Application.dataPath + "/BrainstormDB";
+        connectionString = "URI=file:" + Application.persistentDataPath + "/BrainstormDB";
         dbConnection = new SqliteConnection(connectionString);
         dbConnection.Open();
 
+        //add if database not exists later
+
         //Creates the tables in the database
-        foreach(var query in Queries.CreateTablesQueries)
+        foreach (var query in Queries.CreateTablesQueries)
         {
             ExecuteQueryWithNoReturn(query);
         }
 
         //Inserts data into tables
-        foreach(var query in Queries.InsertIntoSubjectsQueries)
+        foreach (var query in Queries.InsertIntoSubjectsQueries)
         {
             ExecuteQueryWithNoReturn(query);
         }
-
-        dbConnection.Close();
-
-        needsRunning = false;
     }
 
-    private void ExecuteQueryWithNoReturn(string query)
+    void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void OnDestroy()
+    {
+        if(dbConnection != null && dbConnection.State != ConnectionState.Closed)
+        {
+            dbConnection.Close();
+            dbConnection = null;
+        }
+    }
+
+    public void ExecuteQueryWithNoReturn(string query)
     {
         IDbCommand dbCommand = dbConnection.CreateCommand();
         dbCommand.CommandText = query;
         dbCommand.ExecuteNonQuery();
     }
 
-    private object ExecuteQueryWithSingleValueReturn(string query)
+    public List<T> ExecuteQueryWithReturn<T>(string query) where T : new()
     {
-        IDbCommand dbCommand = dbConnection.CreateCommand();
-        dbCommand.CommandText = query;
-        var result = dbCommand.ExecuteScalar();
-
-        return result;
+        return GetData<T>(query);
     }
-
-    private List<List<object>> ExecuteQueryWithMultiValueReturn(string query)
+    
+    private List<T> GetData<T>(string query) where T : new()
     {
-        var result = new List<List<object>>();
+        List<T> result = new List<T>();
 
         IDbCommand dbCommand = dbConnection.CreateCommand();
         dbCommand.CommandText = query;
@@ -65,11 +80,16 @@ public class DatabaseManager : MonoBehaviour
 
         while (reader.Read())
         {
-            var row = new List<object>();
-
+            var row = new T();
             for (int i = 0; i < reader.FieldCount; i++)
             {
-                row.Add(reader.GetValue(i));
+                string name = reader.GetName(i);
+                PropertyInfo property = typeof(T).GetProperty(name);
+
+                if (property != null && reader.GetValue(i) != DBNull.Value)
+                {
+                    property.SetValue(row, reader.GetValue(i));
+                }
             }
 
             result.Add(row);
