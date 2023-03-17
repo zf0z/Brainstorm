@@ -64,6 +64,19 @@ public static class Queries
         InsertLongDivisionIntoTopic
     };
 
+    public static string InsertQuestion1IntoFactors = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (1, 'What are the factors of 30?', '1, 2, 3, 5, 6, 10, 15, 30', 1)";
+    public static string InsertQuestion2IntoFactors = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (2, 'What are the common factors of 12 and 18?', '1, 2, 3, 6', 1)";
+    public static string InsertQuestion3IntoFactors = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (3, 'What is the prime factorization of 48?', '2 x 2 x 2 x 2 x 3', 1)";
+    public static string InsertQuestion4IntoFactors = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (4, 'What is the greatest common factor of 16 and 24?', '8', 1)";
+
+    public static List<string> InsertIntoFlashcardsQueries = new List<string>
+    {
+        InsertQuestion1IntoFactors,
+        InsertQuestion2IntoFactors,
+        InsertQuestion3IntoFactors,
+        InsertQuestion4IntoFactors
+    };
+
 
     public static string GetAllSubjects = "SELECT * FROM Subjects";
     public static string GetAllTopics = "SELECT * FROM Topics WHERE SubjectId = ";

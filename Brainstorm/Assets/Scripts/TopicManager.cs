@@ -12,6 +12,9 @@ public class TopicManager : MonoBehaviour
     public Text topicNameText;
     public Button backButton;
     public Button flashcardFrenzyButton;
+    public GameObject topicFlashcard;
+    public Transform flashcardParent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,15 @@ public class TopicManager : MonoBehaviour
 
         backButton.onClick.AddListener(Back);
         flashcardFrenzyButton.onClick.AddListener(StartFlashcardFrenzy);
+
+        var flashCards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId);
+
+        foreach (var flashcard in flashCards)
+        {
+            var card = Instantiate(topicFlashcard, flashcardParent);
+            card.transform.Find("Question").GetComponent<Text>().text = flashcard.Question;
+            card.transform.Find("Answer").GetComponent<Text>().text = flashcard.Answer;
+        }
     }
 
     private void Back()

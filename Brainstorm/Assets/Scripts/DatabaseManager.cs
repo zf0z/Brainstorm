@@ -39,6 +39,11 @@ public class DatabaseManager : MonoBehaviour
         {
             ExecuteQueryWithNoReturn(query);
         }
+
+        foreach (var query in Queries.InsertIntoFlashcardsQueries)
+        {
+            ExecuteQueryWithNoReturn(query);
+        }
     }
 
     void Awake()
