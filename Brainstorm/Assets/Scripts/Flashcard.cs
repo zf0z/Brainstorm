@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class Flashcard
 {
     public long Id { get; set; }
