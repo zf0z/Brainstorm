@@ -206,7 +206,6 @@ public static class Queries
 
 
 
-
     public static List<string> InsertIntoFlashcardsQueries = new List<string>
     {
         //Maths
