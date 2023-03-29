@@ -129,7 +129,7 @@ public static class Queries
     public static string InsertQuestion4IntoPercentages = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (18, 'How do you convert a decimal to a percentage?', 'Multiply by 100', 4)";
     public static string InsertQuestion5IntoPercentages = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (19, 'What is compound interest?', 'Earning interest on interest', 4)";
     
-    public static string InsertQuestion1IntoTrigonometry = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (20, 'What is Pythagoras' Theorem?', 'a^2 + b^2 = c^2', 5)";
+    public static string InsertQuestion1IntoTrigonometry = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (20, 'What is Pythagoras'' Theorem?', 'a^2 + b^2 = c^2', 5)";
     public static string InsertQuestion2IntoTrigonometry = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (21, 'What are the edges of a right-angled triangle called?', 'Hypotenuse, Opposite and Adjacent', 5)";
     public static string InsertQuestion3IntoTrigonometry = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (22, 'What is the acronym for the trigonometry functions?', 'SOH CAH TOA', 5)";
     public static string InsertQuestion4IntoTrigonometry = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (23, 'What is the sin ratio?', 'sin = opposite / hypotenuse', 5)";
@@ -146,13 +146,13 @@ public static class Queries
     public static string InsertQuestion8IntoEnglishTerms = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (32, 'What is a Protagonist?', 'The main character or speaker in a poem, play or story.', 6)";
 
     public static string InsertQuestion1IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (33, 'The female protagonist, who is the only daughter of Lord and Lady Capulet.', 'Juliet', 7)";
-    public static string InsertQuestion2IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (34, 'The head of the family and Juliet's portective father.', 'Lord Capulet', 7)";
+    public static string InsertQuestion2IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (34, 'The head of the family and Juliet''s portective father.', 'Lord Capulet', 7)";
     public static string InsertQuestion3IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (35, 'The male protagonist, who is the son of Lord and Lady Montague.', 'Romeo', 7)";
     public static string InsertQuestion4IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (36, 'A single character who functions as the narrator.', 'The Chorus', 7)";
     public static string InsertQuestion5IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (37, 'The Prince of Verona, concerned about maintaining peace at all costs.', 'Prince Escalus', 7)";
-    public static string InsertQuestion6IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (38, 'The reserved head of the family and Romeo's father.', 'Lord Montague', 7)";
-    public static string InsertQuestion7IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (39, 'Juliet's cold and absent mother who consider marriage in terms of social status.', 'Lady Capulet', 7)";
-    public static string InsertQuestion8IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (40, 'Romeo's mother who dislikes violence between the families.', 'Lady Montague', 7)";
+    public static string InsertQuestion6IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (38, 'The reserved head of the family and Romeo''s father.', 'Lord Montague', 7)";
+    public static string InsertQuestion7IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (39, 'Juliet''s cold and absent mother who consider marriage in terms of social status.', 'Lady Capulet', 7)";
+    public static string InsertQuestion8IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (40, 'Romeo''s mother who dislikes violence between the families.', 'Lady Montague', 7)";
 
     //Physics
     public static string InsertQuestion1IntoSpecificHeatCapacity = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (41, 'What is Specific Heat Capacity(SHC)?', 'The energy required to raise the temperature of 1kg of a substance by 1 degree celsius.', 8)";
@@ -183,7 +183,7 @@ public static class Queries
     public static string InsertQuestion1IntoAtomicStructure = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (61, 'How many electrons can the first shell hold?', '2 electrons', 12)";
     public static string InsertQuestion2IntoAtomicStructure = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (62, 'How many electrons can the second shell hold?', '8 electrons', 12)";
     public static string InsertQuestion3IntoAtomicStructure = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (63, 'The No. of shells equals...?', 'Period on the periodic table.', 12)";
-    public static string InsertQuestion4IntoAtomicStructure = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (64, 'What are the 'Valence' electrons?', 'Outer shell electrons which participate in reactions.', 12)";
+    public static string InsertQuestion4IntoAtomicStructure = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (64, 'What are the ''Valence'' electrons?', 'Outer shell electrons which participate in reactions.', 12)";
     public static string InsertQuestion5IntoAtomicStructure = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (65, 'Nitrogen electron structure?', '2, 5', 12)";
     
     public static string InsertQuestion1IntoMetallicBonding = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (66, 'What is a Delocalised Electron?', 'An electron that can movefreely throughout the structure.', 13)";
@@ -201,7 +201,7 @@ public static class Queries
     public static string InsertQuestion1IntoPolymers = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (76, 'What are Monomers?', 'A small molecule that can join with other small molecules to form polymers.', 15)";
     public static string InsertQuestion2IntoPolymers = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (77, 'What are Polymers?', 'Long molecules made by joining lots of monomers.', 15)";
     public static string InsertQuestion3IntoPolymers = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (78, 'What are Plastics?', 'Synthetic polymers that can be moulded or shaped.', 15)";
-    public static string InsertQuestion4IntoPolymers = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (79, 'How do you name a polymer?', 'Named as 'Poly(Monomer)'.', 15)";
+    public static string InsertQuestion4IntoPolymers = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (79, 'How do you name a polymer?', 'Named as ''Poly(Monomer)''.', 15)";
     public static string InsertQuestion5IntoPolymers = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (80, 'What are Amino Acids?', 'Monomers of proteins.', 15)";
 
 
