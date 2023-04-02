@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FlashcardFrenzy.unity
     guid: da8ba0e9f557a214aa2f667bd193edd7
+  - enabled: 1
+    path: Assets/Scenes/MultipleChoiceGame.unity
+    guid: 8cd8c84347cb77b49997310e20d4f326
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
