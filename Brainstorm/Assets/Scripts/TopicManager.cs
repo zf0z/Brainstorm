@@ -12,6 +12,7 @@ public class TopicManager : MonoBehaviour
     public Text topicNameText;
     public Button backButton;
     public Button flashcardFrenzyButton;
+    public Button dunkTheTeacherButton;
     public GameObject topicFlashcard;
     public Transform flashcardParent;
 
@@ -28,6 +29,7 @@ public class TopicManager : MonoBehaviour
 
         backButton.onClick.AddListener(Back);
         flashcardFrenzyButton.onClick.AddListener(StartFlashcardFrenzy);
+        dunkTheTeacherButton.onClick.AddListener(StartDunkTheTeacher);
 
         var flashCards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId);
 
@@ -47,5 +49,10 @@ public class TopicManager : MonoBehaviour
     private void StartFlashcardFrenzy()
     {
         SceneManager.LoadScene("FlashcardFrenzy");
+    }
+
+    private void StartDunkTheTeacher()
+    {
+        SceneManager.LoadScene("MultipleChoiceGame");
     }
 }
