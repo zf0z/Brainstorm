@@ -18,6 +18,8 @@ public class MultipleChoiceGameManager : MonoBehaviour
     public GameObject questionAndAnswersPanel;
     public Text scoreText;
     public Text timeLeftText;
+    public Text highScore;
+    public Text stats;
 
     public List<Button> answerButtons;
 
@@ -29,6 +31,10 @@ public class MultipleChoiceGameManager : MonoBehaviour
     private int totalCorrectAnswers;
     private float timeLeft = 60;
     private bool gameOver;
+    private bool answeredQuestion;
+    private int score;
+    private int bonusScore;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,6 +57,8 @@ public class MultipleChoiceGameManager : MonoBehaviour
             GameOver();
             return;
         }
+        answeredQuestion = false;
+        StartCoroutine(BonusScoreStopwatch());
 
         var correctAnswerId = Random.Range(0, 4);
 
@@ -112,12 +120,17 @@ public class MultipleChoiceGameManager : MonoBehaviour
 
     private void MarkAsCorrect(Button button)
     {
+        answeredQuestion = true;
         totalCorrectAnswers++;
+        score += 5000;
+        score += bonusScore;
+
         StartCoroutine(ChangeAnswerColor(button, Color.green));
     }
 
     private void MarkAsIncorrect(Button button)
     {
+        answeredQuestion = true;
         StartCoroutine(ChangeAnswerColor(button, Color.red));
     }
 
@@ -133,6 +146,21 @@ public class MultipleChoiceGameManager : MonoBehaviour
         if(timeLeft <= 0f)
         {
             GameOver();
+        }
+    }
+
+    private IEnumerator BonusScoreStopwatch()
+    {
+        bonusScore = 10000;
+        while (!answeredQuestion && bonusScore > 0)
+        {
+            yield return new WaitForSeconds(0.1f);
+            bonusScore -= Random.Range(200, 400);
+        }
+
+        if(bonusScore < 0)
+        {
+            bonusScore = 0;
         }
     }
 
@@ -153,7 +181,21 @@ public class MultipleChoiceGameManager : MonoBehaviour
     private void GameOver()
     {
         gameOver = true;
-        scoreText.text = totalCorrectAnswers + " / " + totalQuestionsAnswered;
+
+        var highScoreValue = databaseManager.ExecuteQueryWithReturn<Topic>("SELECT HighScore FROM Topics WHERE Id = " + PlayerPrefs.GetInt("TopicId")).ToList().First().HighScore;
+
+        if (score > highScoreValue)
+        {
+            SetHighScore(score);
+            highScoreValue = score;
+        }
+
+        scoreText.text = score.ToString();
+        
+        highScore.text = highScoreValue.ToString();
+
+        stats.text = totalCorrectAnswers + "/" + totalQuestionsAnswered;
+        
         gameOverPanel.SetActive(true);
         gameOverPanel.transform.SetAsLastSibling();
 
@@ -161,6 +203,12 @@ public class MultipleChoiceGameManager : MonoBehaviour
         {
             button.interactable = false;
         }
+    }
+
+    private void SetHighScore(int score)
+    {
+        var query = "UPDATE Topics SET HighScore = " + score + " WHERE Id = " + PlayerPrefs.GetInt("TopicId");
+        databaseManager.ExecuteQueryWithNoReturn(query);
     }
 
 }
