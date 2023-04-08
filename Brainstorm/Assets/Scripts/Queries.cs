@@ -16,6 +16,7 @@ public static class Queries
                                                     "Id INTEGER PRIMARY KEY, " +
                                                     "TopicName VARCHAR(30), " +
                                                     "SubjectId INTEGER, " +
+                                                    "HighScore INTEGER DEFAULT 0," +
                                                     "FOREIGN KEY(SubjectId) " +
                                                     "REFERENCES Subjects(Id))";
 
@@ -51,7 +52,6 @@ public static class Queries
         InsertChemistryIntoSubjects
     };
 
-    //Just examples, need updating with real data
     //Maths
     public static string InsertFactorsIntoTopic = "INSERT INTO Topics(Id, TopicName, SubjectId) VALUES (1, 'Factors', 1)";
     public static string InsertNumbersIntoTopic = "INSERT INTO Topics(Id, TopicName, SubjectId) VALUES (2, 'Numbers', 1)";
@@ -146,7 +146,7 @@ public static class Queries
     public static string InsertQuestion8IntoEnglishTerms = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (32, 'What is a Protagonist?', 'The main character or speaker in a poem, play or story.', 6)";
 
     public static string InsertQuestion1IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (33, 'The female protagonist, who is the only daughter of Lord and Lady Capulet.', 'Juliet', 7)";
-    public static string InsertQuestion2IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (34, 'The head of the family and Juliet''s portective father.', 'Lord Capulet', 7)";
+    public static string InsertQuestion2IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (34, 'The head of the family and Juliet''s protective father.', 'Lord Capulet', 7)";
     public static string InsertQuestion3IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (35, 'The male protagonist, who is the son of Lord and Lady Montague.', 'Romeo', 7)";
     public static string InsertQuestion4IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (36, 'A single character who functions as the narrator.', 'The Chorus', 7)";
     public static string InsertQuestion5IntoRomJulChars = "INSERT INTO Flashcards(Id, Question, Answer, TopicId) VALUES (37, 'The Prince of Verona, concerned about maintaining peace at all costs.', 'Prince Escalus', 7)";
