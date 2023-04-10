@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -15,6 +16,12 @@ public class TopicManager : MonoBehaviour
     public Button dunkTheTeacherButton;
     public GameObject topicFlashcard;
     public Transform flashcardParent;
+    public Button includeAllButton;
+    public Button excludeAllButton;
+
+    public GameObject flashcardCountWarning;
+
+    private List<GameObject> flashcardTemplates;
 
     // Start is called before the first frame update
     void Start()
@@ -33,12 +40,105 @@ public class TopicManager : MonoBehaviour
 
         var flashCards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId);
 
+        flashcardTemplates = new List<GameObject>();
+
         foreach (var flashcard in flashCards)
         {
             var card = Instantiate(topicFlashcard, flashcardParent);
             card.transform.Find("Question").GetComponent<Text>().text = flashcard.Question;
             card.transform.Find("Answer").GetComponent<Text>().text = flashcard.Answer;
+
+            card.GetComponent<TopicFlashcardBehaviour>().FlashcardId = flashcard.Id;
+            card.GetComponent<TopicFlashcardBehaviour>().CurrentState = flashcard.Included;
+
+            if (flashcard.Included == 0)
+            {
+                card.GetComponent<Image>().color = Color.gray;
+            }
+            else
+            {
+                card.GetComponent<Image>().color = Color.white;
+            }
+
+            // add event for when flashcard is clicked
+            var eventTrigger = card.GetComponent<EventTrigger>();
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerClick;
+            entry.callback.AddListener((eventData) => { ChangeFlashcardState(card); });
+            eventTrigger.triggers.Add(entry);
+
+            flashcardTemplates.Add(card);
         }
+
+        includeAllButton.onClick.AddListener(delegate { IncludeAllFlashcards(flashcardTemplates); });
+        excludeAllButton.onClick.AddListener(delegate { ExcludeAllFlashcards(flashcardTemplates); });
+    }
+
+    public void ChangeFlashcardState(GameObject card)
+    {
+        var cardBehaviourScript = card.GetComponent<TopicFlashcardBehaviour>();
+
+        var updatedState = cardBehaviourScript.ChangeState();
+        var flashCardId = cardBehaviourScript.FlashcardId;
+
+        databaseManager.ExecuteQueryWithNoReturn("UPDATE Flashcards SET Included = " + updatedState + " WHERE Id = " + flashCardId);
+    }
+
+    private void IncludeAllFlashcards(List<GameObject> flashcards)
+    {
+        var ids = new List<long>();
+
+        foreach(var flashcard in flashcards)
+        {
+            var cardBehaviourScript = flashcard.GetComponent<TopicFlashcardBehaviour>();
+
+            if(!cardBehaviourScript.IsIncluded())
+            {
+                cardBehaviourScript.Include();
+
+                ids.Add(cardBehaviourScript.FlashcardId);
+            }
+            
+        }
+
+        var idsForQuery = string.Join(",", ids.ToArray());
+
+        databaseManager.ExecuteQueryWithNoReturn("UPDATE Flashcards SET Included = 1 WHERE Id IN (" + idsForQuery + ")");
+    }
+    
+    private void ExcludeAllFlashcards(List<GameObject> flashcards)
+    {
+        var ids = new List<long>();
+
+        foreach (var flashcard in flashcards)
+        {
+
+            var cardBehaviourScript = flashcard.GetComponent<TopicFlashcardBehaviour>();
+
+            if(cardBehaviourScript.IsIncluded())
+            {
+                cardBehaviourScript.Exclude();
+                ids.Add(cardBehaviourScript.FlashcardId);
+            }
+        }
+
+        var idsForQuery = string.Join(",", ids.ToArray());
+
+        databaseManager.ExecuteQueryWithNoReturn("UPDATE Flashcards SET Included = 0 WHERE Id IN (" + idsForQuery + ")");
+    }
+    
+    private int GetFlashcardCount()
+    {
+        var count = flashcardTemplates.Where(x => x.GetComponent<TopicFlashcardBehaviour>().IsIncluded()).Count();
+
+        return count;
+    }
+
+    private IEnumerator ShowFlashcardWarning()
+    {
+        flashcardCountWarning.SetActive(true);
+        yield return new WaitForSeconds(2);
+        flashcardCountWarning.SetActive(false);
     }
 
     private void Back()
@@ -48,11 +148,26 @@ public class TopicManager : MonoBehaviour
 
     private void StartFlashcardFrenzy()
     {
-        SceneManager.LoadScene("FlashcardFrenzy");
+        if(GetFlashcardCount() > 0)
+        {
+            SceneManager.LoadScene("FlashcardFrenzy");
+        }
+        else
+        {
+            StartCoroutine(ShowFlashcardWarning());
+        }
+        
     }
 
     private void StartDunkTheTeacher()
     {
-        SceneManager.LoadScene("MultipleChoiceGame");
+        if(GetFlashcardCount() > 0)
+        {
+            SceneManager.LoadScene("MultipleChoiceGame");
+        }
+        else
+        {
+            StartCoroutine(ShowFlashcardWarning());
+        }
     }
 }
