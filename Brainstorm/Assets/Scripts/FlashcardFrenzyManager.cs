@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -38,7 +37,7 @@ public class FlashcardFrenzyManager : MonoBehaviour
         databaseManager = FindObjectOfType<DatabaseManager>();
 
         var topicId = PlayerPrefs.GetInt("TopicId");
-        flashcards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId + " AND Included = 1 ORDER BY RANDOM()");
+        flashcards = databaseManager.ExecuteQueryWithReturn<Flashcard>(Queries.GetIncludedFlashcardsForTopicJumbled, new string[] { topicId.ToString() });
 
         currentFlashcardIndex = 0;
         SwitchFlashcard();

@@ -1,10 +1,9 @@
-using UnityEngine;
-using System.Data;
 using Mono.Data.Sqlite;
-using System.IO;
-using System.Collections.Generic;
-using System.Reflection;
 using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Reflection;
+using UnityEngine;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -68,6 +67,13 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
+    public void ExecuteQueryWithNoReturn(string query, string[] values)
+    {
+        IDbCommand dbCommand = dbConnection.CreateCommand();
+        dbCommand.CommandText = string.Format(query, values);
+        dbCommand.ExecuteNonQuery();
+    }
+
     public void ExecuteQueryWithNoReturn(string query)
     {
         IDbCommand dbCommand = dbConnection.CreateCommand();
@@ -75,11 +81,16 @@ public class DatabaseManager : MonoBehaviour
         dbCommand.ExecuteNonQuery();
     }
 
+    public List<T> ExecuteQueryWithReturn<T>(string query, string[] values) where T : new()
+    {
+        return GetData<T>(string.Format(query, values));
+    }
+
     public List<T> ExecuteQueryWithReturn<T>(string query) where T : new()
     {
         return GetData<T>(query);
     }
-    
+
     private List<T> GetData<T>(string query) where T : new()
     {
         List<T> result = new List<T>();

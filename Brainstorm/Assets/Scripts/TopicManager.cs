@@ -30,7 +30,7 @@ public class TopicManager : MonoBehaviour
 
         int topicId = PlayerPrefs.GetInt("TopicId");
 
-        var topic = databaseManager.ExecuteQueryWithReturn<Topic>("SELECT * FROM Topics WHERE Id = " + topicId).First();
+        var topic = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetTopic, new string[] { topicId.ToString() }).First();
 
         topicNameText.text = topic.TopicName;
 
@@ -38,7 +38,7 @@ public class TopicManager : MonoBehaviour
         flashcardFrenzyButton.onClick.AddListener(StartFlashcardFrenzy);
         dunkTheTeacherButton.onClick.AddListener(StartDunkTheTeacher);
 
-        var flashCards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId);
+        var flashCards = databaseManager.ExecuteQueryWithReturn<Flashcard>(Queries.GetFlashcardsForTopic, new string[] { topicId.ToString() });
 
         flashcardTemplates = new List<GameObject>();
 
@@ -81,7 +81,7 @@ public class TopicManager : MonoBehaviour
         var updatedState = cardBehaviourScript.ChangeState();
         var flashCardId = cardBehaviourScript.FlashcardId;
 
-        databaseManager.ExecuteQueryWithNoReturn("UPDATE Flashcards SET Included = " + updatedState + " WHERE Id = " + flashCardId);
+        databaseManager.ExecuteQueryWithNoReturn(Queries.UpdateFlashcardStates, new string[] { updatedState.ToString(), flashCardId.ToString() });
     }
 
     private void IncludeAllFlashcards(List<GameObject> flashcards)
@@ -103,7 +103,7 @@ public class TopicManager : MonoBehaviour
 
         var idsForQuery = string.Join(",", ids.ToArray());
 
-        databaseManager.ExecuteQueryWithNoReturn("UPDATE Flashcards SET Included = 1 WHERE Id IN (" + idsForQuery + ")");
+        databaseManager.ExecuteQueryWithNoReturn(Queries.UpdateFlashcardStates, new string[] { 1.ToString(), idsForQuery });
     }
     
     private void ExcludeAllFlashcards(List<GameObject> flashcards)
@@ -124,7 +124,7 @@ public class TopicManager : MonoBehaviour
 
         var idsForQuery = string.Join(",", ids.ToArray());
 
-        databaseManager.ExecuteQueryWithNoReturn("UPDATE Flashcards SET Included = 0 WHERE Id IN (" + idsForQuery + ")");
+        databaseManager.ExecuteQueryWithNoReturn(Queries.UpdateFlashcardStates, new string[] { 0.ToString(), idsForQuery });
     }
     
     private int GetFlashcardCount()

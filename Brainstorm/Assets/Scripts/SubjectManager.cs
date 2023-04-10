@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,15 +17,15 @@ public class SubjectManager : MonoBehaviour
     {
         databaseManager = FindObjectOfType<DatabaseManager>();
 
-        int id = PlayerPrefs.GetInt("SubjectId");
+        var id = PlayerPrefs.GetInt("SubjectId").ToString();
 
-        var subject = databaseManager.ExecuteQueryWithReturn<Subject>("SELECT SubjectName FROM Subjects WHERE Id = " + id).First();
+        var subject = databaseManager.ExecuteQueryWithReturn<Subject>(Queries.GetSubject, new string[] { id }).First();
 
         subjectNameText.text = subject.SubjectName;
 
         backButton.onClick.AddListener(Back);
 
-        var topics = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetAllTopics + id);
+        var topics = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetAllTopicsForSubject, new string[] { id });
 
         foreach (var topic in topics)
         {
