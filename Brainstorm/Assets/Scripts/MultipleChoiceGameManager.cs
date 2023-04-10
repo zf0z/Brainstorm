@@ -46,7 +46,7 @@ public class MultipleChoiceGameManager : MonoBehaviour
 
         var topicId = PlayerPrefs.GetInt("TopicId");
 
-        var allFlashcards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId + " ORDER BY RANDOM()");
+        var allFlashcards = databaseManager.ExecuteQueryWithReturn<Flashcard>(Queries.GetAllFlashcardsForTopicJumbled, new string[] { topicId.ToString() });
 
         allAnswers = allFlashcards.Select(x => x.Answer).ToList();
 
@@ -186,8 +186,8 @@ public class MultipleChoiceGameManager : MonoBehaviour
     private void GameOver()
     {
         gameOver = true;
-
-        var highScoreValue = databaseManager.ExecuteQueryWithReturn<Topic>("SELECT HighScore FROM Topics WHERE Id = " + PlayerPrefs.GetInt("TopicId")).ToList().First().HighScore;
+        var topicId = PlayerPrefs.GetInt("TopicId");
+        var highScoreValue = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetTopic, new string[] { topicId.ToString() }).ToList().First().HighScore;
 
         if (score > highScoreValue)
         {
@@ -212,8 +212,8 @@ public class MultipleChoiceGameManager : MonoBehaviour
 
     private void SetHighScore(int score)
     {
-        var query = "UPDATE Topics SET HighScore = " + score + " WHERE Id = " + PlayerPrefs.GetInt("TopicId");
-        databaseManager.ExecuteQueryWithNoReturn(query);
+        var topicId = PlayerPrefs.GetInt("TopicId");
+        databaseManager.ExecuteQueryWithNoReturn(Queries.UpdateHighscore, new string[] { score.ToString(), topicId.ToString() });
     }
 
 }
