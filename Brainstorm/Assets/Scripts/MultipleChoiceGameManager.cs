@@ -24,8 +24,9 @@ public class MultipleChoiceGameManager : MonoBehaviour
     public List<Button> answerButtons;
 
     private int currentQuestionIndex = 0;
-    private List<Flashcard> flashcards;
+    private List<Flashcard> avaliableFlashcards;
     private List<string> avaliableAnswers;
+    private List<string> allAnswers;
 
     private int totalQuestionsAnswered;
     private int totalCorrectAnswers;
@@ -45,8 +46,11 @@ public class MultipleChoiceGameManager : MonoBehaviour
 
         var topicId = PlayerPrefs.GetInt("TopicId");
 
-        flashcards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId + " ORDER BY RANDOM()");
+        var allFlashcards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId + " ORDER BY RANDOM()");
 
+        allAnswers = allFlashcards.Select(x => x.Answer).ToList();
+
+        avaliableFlashcards = allFlashcards.Where(x => x.Included == 1).ToList();
     }
 
     private void ShowQuestionAndAnswers()
@@ -62,7 +66,8 @@ public class MultipleChoiceGameManager : MonoBehaviour
 
         var correctAnswerId = Random.Range(0, 4);
 
-        avaliableAnswers = flashcards.Select(x => x.Answer).ToList();
+        avaliableAnswers = new List<string>(allAnswers);
+
         avaliableAnswers.Remove(question.Answer);
 
         questionText.text = question.Question;
@@ -88,12 +93,12 @@ public class MultipleChoiceGameManager : MonoBehaviour
 
     private Flashcard GetQuestion()
     {
-        if(currentQuestionIndex >= flashcards.Count)
+        if(currentQuestionIndex >= avaliableFlashcards.Count)
         {
             return null;
         }
 
-        return flashcards[currentQuestionIndex++];
+        return avaliableFlashcards[currentQuestionIndex++];
     }
 
     private string GetRandomAnswer()

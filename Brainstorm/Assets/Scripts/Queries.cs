@@ -25,6 +25,7 @@ public static class Queries
                                                     "Id INTEGER PRIMARY KEY, " +
                                                     "Question TEXT, " +
                                                     "Answer TEXT, " +
+                                                    "Included INTEGER DEFAULT 1, " +
                                                     "TopicId INTEGER, " +
                                                     "FOREIGN KEY(TopicId) " +
                                                     "REFERENCES Topics(Id))";

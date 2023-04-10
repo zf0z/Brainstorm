@@ -38,7 +38,7 @@ public class FlashcardFrenzyManager : MonoBehaviour
         databaseManager = FindObjectOfType<DatabaseManager>();
 
         var topicId = PlayerPrefs.GetInt("TopicId");
-        flashcards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId + " ORDER BY RANDOM()");
+        flashcards = databaseManager.ExecuteQueryWithReturn<Flashcard>("SELECT * FROM Flashcards WHERE TopicId = " + topicId + " AND Included = 1 ORDER BY RANDOM()");
 
         currentFlashcardIndex = 0;
         SwitchFlashcard();
