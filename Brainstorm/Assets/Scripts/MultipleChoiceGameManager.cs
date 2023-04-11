@@ -20,6 +20,8 @@ public class MultipleChoiceGameManager : MonoBehaviour
     public Text timeLeftText;
     public Text highScore;
     public Text stats;
+    public GameObject scoreWarning;
+    public Text addedScore;
 
     public List<Button> answerButtons;
 
@@ -79,9 +81,8 @@ public class MultipleChoiceGameManager : MonoBehaviour
 
             if (i == correctAnswerId)
             {
-
                 button.gameObject.GetComponentInChildren<Text>().text = question.Answer;
-                button.onClick.AddListener(() => MarkAsCorrect(button));
+                button.onClick.AddListener(() => MarkAsCorrect(button));                                
             }
             else
             {
@@ -129,7 +130,8 @@ public class MultipleChoiceGameManager : MonoBehaviour
         totalCorrectAnswers++;
         score += 5000;
         score += bonusScore;
-
+        addedScore.text = "+" + (5000 + bonusScore);     
+        StartCoroutine(ShowScoreWarning());
         StartCoroutine(ChangeAnswerColor(button, Color.green));
     }
 
@@ -137,6 +139,14 @@ public class MultipleChoiceGameManager : MonoBehaviour
     {
         answeredQuestion = true;
         StartCoroutine(ChangeAnswerColor(button, Color.red));
+    }
+
+    private IEnumerator ShowScoreWarning()
+    {
+        scoreWarning.SetActive(true);        
+        scoreWarning.GetComponentInChildren<Text>().text = addedScore.text;
+        yield return new WaitForSeconds(1.5f);
+        scoreWarning.SetActive(false);
     }
 
     private IEnumerator CountdownTimer()
@@ -178,7 +188,7 @@ public class MultipleChoiceGameManager : MonoBehaviour
     {
         instructions.SetActive(false);
         questionAndAnswersPanel.SetActive(true);
-
+        
         StartCoroutine(CountdownTimer());
         ShowQuestionAndAnswers();
     }
@@ -215,5 +225,6 @@ public class MultipleChoiceGameManager : MonoBehaviour
         var topicId = PlayerPrefs.GetInt("TopicId");
         databaseManager.ExecuteQueryWithNoReturn(Queries.UpdateHighscore, new string[] { score.ToString(), topicId.ToString() });
     }
+
 
 }
