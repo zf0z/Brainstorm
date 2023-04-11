@@ -11,7 +11,7 @@ public static class Queries
 
     private static readonly string CreateTopicsTableQuery = "DROP TABLE IF EXISTS Topics; " +
                                                     "CREATE TABLE Topics (" +
-                                                    "Id INTEGER PRIMARY KEY, " +
+                                                    "Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                     "TopicName VARCHAR(30), " +
                                                     "SubjectId INTEGER, " +
                                                     "HighScore INTEGER DEFAULT 0," +
@@ -321,6 +321,9 @@ public static class Queries
     public static string GetIncludedFlashcardsForTopicJumbled = "SELECT * FROM Flashcards WHERE TopicId = {0} AND Included = 1 ORDER BY RANDOM()";
 
     public static string GetSubject = "SELECT SubjectName FROM Subjects WHERE Id = {0}";
+
+    public static string CreateTopic = "INSERT INTO Topics(TopicName, SubjectId) VALUES ('{0}', {1})";
+    public static string GetLatestAddedTopic = "SELECT * FROM Topics ORDER BY Id DESC LIMIT 1";
 
 
 }
