@@ -11,6 +11,8 @@ public class SubjectManager : MonoBehaviour
     public Transform buttonParent;
     public Text subjectNameText;
     public Button backButton;
+    public FormManager formManager;
+    public Button openCreateTopicFormButton;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,9 @@ public class SubjectManager : MonoBehaviour
             button.GetComponentInChildren<Text>().text = topic.TopicName;
             button.onClick.AddListener(() => LoadTopicPage(topic.Id));
         }
+
+        formManager.Initialize();
+        openCreateTopicFormButton.onClick.AddListener(formManager.OpenForm);
     }
 
     private void Back()

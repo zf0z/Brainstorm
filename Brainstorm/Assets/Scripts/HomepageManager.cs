@@ -4,7 +4,8 @@ using UnityEngine.UI;
 
 public class HomepageManager : MonoBehaviour
 {
-
+    public FormManager formManager;
+    public Button createSubjectFormButton;
     public Button subjectButtonPrefab;
     public Transform buttonParent;
     private DatabaseManager databaseManager;
@@ -22,6 +23,9 @@ public class HomepageManager : MonoBehaviour
             button.GetComponentInChildren<Text>().text = subject.SubjectName;
             button.onClick.AddListener(() => LoadSubjectPage(subject.Id));
         }
+
+        formManager.Initialize();
+        createSubjectFormButton.onClick.AddListener(formManager.OpenForm);
     }
 
     private void LoadSubjectPage(long subjectId)

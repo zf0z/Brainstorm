@@ -6,7 +6,7 @@ public static class Queries
 
     private static readonly string CreateSubjectsTableQuery = "DROP TABLE IF EXISTS Subjects; " +
                                                     "CREATE TABLE Subjects (" +
-                                                    "Id INTEGER PRIMARY KEY, " +
+                                                    "Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                     "SubjectName VARCHAR(30))";
 
     private static readonly string CreateTopicsTableQuery = "DROP TABLE IF EXISTS Topics; " +
@@ -20,7 +20,7 @@ public static class Queries
 
     private static readonly string CreateFlashcardsTableQuery = "DROP TABLE IF EXISTS Flashcards; " +
                                                     "CREATE TABLE Flashcards (" +
-                                                    "Id INTEGER PRIMARY KEY, " +
+                                                    "Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                                                     "Question TEXT, " +
                                                     "Answer TEXT, " +
                                                     "Included INTEGER DEFAULT 1, " +
@@ -324,6 +324,9 @@ public static class Queries
 
     public static string CreateTopic = "INSERT INTO Topics(TopicName, SubjectId) VALUES ('{0}', {1})";
     public static string GetLatestAddedTopic = "SELECT * FROM Topics ORDER BY Id DESC LIMIT 1";
+
+    public static string CreateFlashcard = "INSERT INTO Flashcards(Question, Answer, TopicId) VALUES ('{0}', '{1}', {2})";
+    public static string CreateSubject = "INSERT INTO Subjects(SubjectName) VALUES ('{0}')";
 
 
 }

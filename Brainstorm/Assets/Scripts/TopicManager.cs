@@ -18,6 +18,8 @@ public class TopicManager : MonoBehaviour
     public Transform flashcardParent;
     public Button includeAllButton;
     public Button excludeAllButton;
+    public Button addFlashcardButton;
+    public FormManager formManager;
 
     public GameObject flashcardCountWarning;
 
@@ -72,6 +74,9 @@ public class TopicManager : MonoBehaviour
 
         includeAllButton.onClick.AddListener(delegate { IncludeAllFlashcards(flashcardTemplates); });
         excludeAllButton.onClick.AddListener(delegate { ExcludeAllFlashcards(flashcardTemplates); });
+
+        formManager.Initialize();
+        addFlashcardButton.onClick.AddListener(formManager.OpenForm);
     }
 
     public void ChangeFlashcardState(GameObject card)
