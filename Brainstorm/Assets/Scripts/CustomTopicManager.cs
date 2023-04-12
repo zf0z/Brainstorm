@@ -1,59 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class CustomTopicManager : MonoBehaviour
+public class CustomTopicManager : FormManager
 {
-    private DatabaseManager databaseManager;
+    private InputField topicNameInput;
 
-    public GameObject createTopicForm;
-    public Button openCreateFormButton;
-    public Button cancelCreationButton;
-    public Button createTopicButton;
-    public InputField topicNameInput;
-    public Text errorMessage;
-    // Start is called before the first frame update
-    void Start()
+    public override void Initialize()
     {
-        databaseManager = FindObjectOfType<DatabaseManager>();
+        topicNameInput = GameObject.Find("TopicNameInput").GetComponent<InputField>();
+        inputFields.Add(topicNameInput);
 
-        openCreateFormButton.onClick.AddListener(OpenCreateTopicForm);
-        cancelCreationButton.onClick.AddListener(CloseCreateTopicForm);
-        createTopicButton.onClick.AddListener(AddTopicToDatabase);
+        base.Initialize();
     }
 
-    private void AddTopicToDatabase()
+    public override void AddToDatabase()
     {
-        if(topicNameInput.text == string.Empty)
-        {
-            errorMessage.gameObject.SetActive(true);
-            errorMessage.text = "TOPIC NAME MUST BE POPULATED!";
-        }
-        else
-        {
-            topicNameInput.text = topicNameInput.text.Replace("\'", "''");
-            var subjectId = PlayerPrefs.GetInt("SubjectId").ToString();
-            databaseManager.ExecuteQueryWithNoReturn(Queries.CreateTopic, new string[] { topicNameInput.text, subjectId });
-            CloseCreateTopicForm();
-
-            var topicId = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetLatestAddedTopic).First().Id;
-            PlayerPrefs.SetInt("TopicId", (int)topicId);
-            SceneManager.LoadScene("Topic");
-        }
+        var subjectId = PlayerPrefs.GetInt("SubjectId").ToString();
+        databaseManager.ExecuteQueryWithNoReturn(Queries.CreateTopic, new string[] { topicNameInput.text, subjectId });
     }
 
-    private void OpenCreateTopicForm()
+    public override void RefreshPage()
     {
-        createTopicForm.SetActive(true);
-    }
-
-    private void CloseCreateTopicForm()
-    {
-        createTopicForm.SetActive(false);
-        errorMessage.gameObject.SetActive(false);
-        topicNameInput.text = null;
+        var topicId = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetLatestAddedTopic).First().Id;
+        PlayerPrefs.SetInt("TopicId", (int)topicId);
+        SceneManager.LoadScene("Topic");
     }
 }
