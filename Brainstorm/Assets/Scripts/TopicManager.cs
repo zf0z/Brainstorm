@@ -13,7 +13,7 @@ public class TopicManager : MonoBehaviour
     public Text topicNameText;
     public Button backButton;
     public Button flashcardFrenzyButton;
-    public Button dunkTheTeacherButton;
+    public Button multipleChoiceButton;
     public GameObject topicFlashcard;
     public Transform flashcardParent;
     public Button includeAllButton;
@@ -38,7 +38,7 @@ public class TopicManager : MonoBehaviour
 
         backButton.onClick.AddListener(Back);
         flashcardFrenzyButton.onClick.AddListener(StartFlashcardFrenzy);
-        dunkTheTeacherButton.onClick.AddListener(StartDunkTheTeacher);
+        multipleChoiceButton.onClick.AddListener(StartMultipleChoiceGame);
 
         var flashCards = databaseManager.ExecuteQueryWithReturn<Flashcard>(Queries.GetFlashcardsForTopic, new string[] { topicId.ToString() });
 
@@ -139,8 +139,9 @@ public class TopicManager : MonoBehaviour
         return count;
     }
 
-    private IEnumerator ShowFlashcardWarning()
+    private IEnumerator ShowFlashcardWarning(string message)
     {
+        flashcardCountWarning.GetComponentInChildren<Text>().text = message;
         flashcardCountWarning.SetActive(true);
         yield return new WaitForSeconds(2);
         flashcardCountWarning.SetActive(false);
@@ -159,20 +160,26 @@ public class TopicManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowFlashcardWarning());
+            StartCoroutine(ShowFlashcardWarning("WARNING\nYou must include at least 1 flashcard to play"));
         }
         
     }
 
-    private void StartDunkTheTeacher()
+    private void StartMultipleChoiceGame()
     {
-        if(GetFlashcardCount() > 0)
+        var flashcardsIncluded = GetFlashcardCount();
+
+        if (flashcardTemplates.Count() < 4)
         {
-            SceneManager.LoadScene("MultipleChoiceGame");
+            StartCoroutine(ShowFlashcardWarning("WARNING\nYou must have at least 4 flashcards to play"));
+        }
+        else if(flashcardsIncluded == 0)
+        {
+            StartCoroutine(ShowFlashcardWarning("WARNING\nYou must include at least 1 flashcard to play"));        
         }
         else
         {
-            StartCoroutine(ShowFlashcardWarning());
+            SceneManager.LoadScene("MultipleChoiceGame");
         }
     }
 }

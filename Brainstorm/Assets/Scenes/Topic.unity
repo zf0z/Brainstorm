@@ -1185,7 +1185,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7924528, g: 0.23474543, b: 0.23474543, a: 1}
+  m_Color: {r: 1, g: 0.14528298, b: 0.14528298, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2604,7 +2604,7 @@ MonoBehaviour:
   topicNameText: {fileID: 1454426206}
   backButton: {fileID: 2038861520}
   flashcardFrenzyButton: {fileID: 308697804}
-  dunkTheTeacherButton: {fileID: 1314272137}
+  multipleChoiceButton: {fileID: 1314272137}
   topicFlashcard: {fileID: 4635233931770434801, guid: 7909cf530c9497845b8938011a6beabc, type: 3}
   flashcardParent: {fileID: 162505804}
   includeAllButton: {fileID: 611826103}
@@ -3348,11 +3348,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1849512059151876314, guid: d082b764f154f7a4c8ec32a32fd4b8ff, type: 3}
       propertyPath: m_Text
-      value: Dunk the Teacher
+      value: Multiple Choice
       objectReference: {fileID: 0}
     - target: {fileID: 1849512059648028489, guid: d082b764f154f7a4c8ec32a32fd4b8ff, type: 3}
       propertyPath: m_Name
-      value: DunkTheTeacherGameButton
+      value: MultipleChoiceGameButton
       objectReference: {fileID: 0}
     - target: {fileID: 1849512059648028490, guid: d082b764f154f7a4c8ec32a32fd4b8ff, type: 3}
       propertyPath: m_Pivot.x
