@@ -8,6 +8,7 @@ public class HomepageManager : MonoBehaviour
     public Button createSubjectFormButton;
     public Button subjectButtonPrefab;
     public Transform buttonParent;
+
     private DatabaseManager databaseManager;
 
     // Start is called before the first frame update

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public abstract class FormManager : MonoBehaviour
 {
     protected DatabaseManager databaseManager;
-
     protected GameObject form;
     protected Text errorMessage;
     protected Button cancelButton;
@@ -34,14 +33,14 @@ public abstract class FormManager : MonoBehaviour
         form.SetActive(true);
     }
 
-    public void CloseForm()
+    private void CloseForm()
     {
         form.SetActive(false);
         errorMessage.gameObject.SetActive(false);
         ClearInputFields();
     }
 
-    public void SubmitForm()
+    private void SubmitForm()
     {
         if (AllFieldsPopulated())
         {
