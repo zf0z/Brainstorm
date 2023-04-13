@@ -7,9 +7,6 @@ using UnityEngine.UI;
 
 public class MultipleChoiceGameManager : MonoBehaviour
 {
-
-    private DatabaseManager databaseManager;
-
     public Button backButton;
     public Button startButton;
     public GameObject instructions;
@@ -20,16 +17,15 @@ public class MultipleChoiceGameManager : MonoBehaviour
     public Text timeLeftText;
     public Text highScore;
     public Text stats;
-    public GameObject scoreWarning;
+    public GameObject scoreAlert;
     public Text addedScore;
-
     public List<Button> answerButtons;
 
+    private DatabaseManager databaseManager;
     private int currentQuestionIndex = 0;
     private List<Flashcard> avaliableFlashcards;
     private List<string> avaliableAnswers;
     private List<string> allAnswers;
-
     private int totalQuestionsAnswered;
     private int totalCorrectAnswers;
     private float timeLeft = 60;
@@ -126,27 +122,27 @@ public class MultipleChoiceGameManager : MonoBehaviour
 
     private void MarkAsCorrect(Button button)
     {
-        answeredQuestion = true;
-        totalCorrectAnswers++;
-        score += 5000;
-        score += bonusScore;
-        addedScore.text = "+" + (5000 + bonusScore);     
-        StartCoroutine(ShowScoreWarning());
-        StartCoroutine(ChangeAnswerColor(button, Color.green));
+        var pointsToAdd = 5000 + bonusScore;
+        MarkAnswer(button, Color.green, pointsToAdd);
     }
 
     private void MarkAsIncorrect(Button button)
     {
-        answeredQuestion = true;
-        StartCoroutine(ChangeAnswerColor(button, Color.red));
+        MarkAnswer(button, Color.red);
     }
 
-    private IEnumerator ShowScoreWarning()
+    private void MarkAnswer(Button button, Color color, int pointsToAdd = 0)
     {
-        scoreWarning.SetActive(true);        
-        scoreWarning.GetComponentInChildren<Text>().text = addedScore.text;
-        yield return new WaitForSeconds(1.5f);
-        scoreWarning.SetActive(false);
+        answeredQuestion = true;
+        StartCoroutine(ChangeAnswerColor(button, color));
+
+        if (pointsToAdd > 0)
+        {
+            totalCorrectAnswers++;
+            score += pointsToAdd;
+            addedScore.text = "+" + pointsToAdd.ToString();
+            StartCoroutine(AlertManager.ShowAlertForSeconds(scoreAlert, 1f));
+        }
     }
 
     private IEnumerator CountdownTimer()
@@ -197,18 +193,12 @@ public class MultipleChoiceGameManager : MonoBehaviour
     {
         gameOver = true;
         var topicId = PlayerPrefs.GetInt("TopicId");
-        var highScoreValue = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetTopic, new string[] { topicId.ToString() }).ToList().First().HighScore;
+        var currentHighScore = databaseManager.ExecuteQueryWithReturn<Topic>(Queries.GetTopic, new string[] { topicId.ToString() }).ToList().First().HighScore;
 
-        if (score > highScoreValue)
-        {
-            SetHighScore(score);
-            highScoreValue = score;
-        }
+        UpdateHighScore((int)currentHighScore);
 
         scoreText.text = score.ToString();
         
-        highScore.text = highScoreValue.ToString();
-
         stats.text = totalCorrectAnswers + "/" + totalQuestionsAnswered;
         
         gameOverPanel.SetActive(true);
@@ -217,6 +207,21 @@ public class MultipleChoiceGameManager : MonoBehaviour
         foreach(var button in answerButtons)
         {
             button.interactable = false;
+        }
+    }
+
+    private void UpdateHighScore(int currentHighScore)
+    {
+        highScore.text = string.Empty;
+
+        if (score > currentHighScore)
+        {
+            SetHighScore(score);
+            highScore.text = "NEW: " + score.ToString();
+        }
+        else
+        {
+            highScore.text = currentHighScore.ToString();
         }
     }
 

@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class SubjectManager : MonoBehaviour
 {
-    private DatabaseManager databaseManager;
-
     public Button buttonPrefab;
     public Transform buttonParent;
     public Text subjectNameText;
     public Button backButton;
     public FormManager formManager;
     public Button openCreateTopicFormButton;
+
+    private DatabaseManager databaseManager;
 
     // Start is called before the first frame update
     void Start()
