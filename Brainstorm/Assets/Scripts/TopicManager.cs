@@ -139,14 +139,6 @@ public class TopicManager : MonoBehaviour
         return count;
     }
 
-    private IEnumerator ShowFlashcardWarning(string message)
-    {
-        flashcardCountWarning.GetComponentInChildren<Text>().text = message;
-        flashcardCountWarning.SetActive(true);
-        yield return new WaitForSeconds(2);
-        flashcardCountWarning.SetActive(false);
-    }
-
     private void Back()
     {
         SceneManager.LoadScene("Subject");
@@ -160,22 +152,23 @@ public class TopicManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ShowFlashcardWarning("WARNING\nYou must include at least 1 flashcard to play"));
+            var message = "WARNING\nYou must include at least 1 flashcard to play";
+            StartCoroutine(AlertManager.ShowAlertForSeconds(flashcardCountWarning, 1, message));
         }
         
     }
 
     private void StartMultipleChoiceGame()
     {
-        var flashcardsIncluded = GetFlashcardCount();
-
         if (flashcardTemplates.Count() < 4)
         {
-            StartCoroutine(ShowFlashcardWarning("WARNING\nYou must have at least 4 flashcards to play"));
+            var message = "WARNING\nYou must have at least 4 flashcards to play";
+            StartCoroutine(AlertManager.ShowAlertForSeconds(flashcardCountWarning, 1, message));
         }
-        else if(flashcardsIncluded == 0)
+        else if(GetFlashcardCount() == 0)
         {
-            StartCoroutine(ShowFlashcardWarning("WARNING\nYou must include at least 1 flashcard to play"));        
+            var message = "WARNING\nYou must include at least 1 flashcard to play";
+            StartCoroutine(AlertManager.ShowAlertForSeconds(flashcardCountWarning, 1, message));
         }
         else
         {
