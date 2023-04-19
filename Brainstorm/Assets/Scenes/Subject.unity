@@ -2041,7 +2041,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Create Topic
+  m_Text: Add Topic
 --- !u!222 &1842926467
 CanvasRenderer:
   m_ObjectHideFlags: 0
