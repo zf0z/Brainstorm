@@ -2,22 +2,27 @@ using Mono.Data.Sqlite;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Reflection;
 using UnityEngine;
 
 public class DatabaseManager : MonoBehaviour
 {
     private static DatabaseManager instance;
-
-    private string connectionString;
     private IDbConnection dbConnection;
-
 
     private void Start()
     {
-        connectionString = "URI=file:" + Application.persistentDataPath + "/BrainstormDB";
+        var filePath = Application.persistentDataPath + "/BrainstormDB.db";
+        var connectionString = "URI=file:" + filePath;
+
+        var newDatabase = !File.Exists(filePath);
+
         dbConnection = new SqliteConnection(connectionString);
         dbConnection.Open();
+
+        //Dont need to initalize tables if they already exist.
+        if (!newDatabase) return;
 
         //add if database not exists later
 
